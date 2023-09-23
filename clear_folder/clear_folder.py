@@ -76,19 +76,12 @@ def get_categories(file: Path) -> str:
     return "OTHER"
 
 
-categor = []
-
-
 def move_file(file: Path, category: str, root_dir: Path) -> None:
     target_dir = root_dir.joinpath(category)
     if not target_dir.exists():
         target_dir.mkdir()
     new_path = target_dir.joinpath(normalize(file.stem) + file.suffix)
-    categor.append(file.name)
-    print(categor)
-    # if not new_path.exists():
     file = file.replace(new_path)
-    print(file.name, target_dir)
     if file.is_file() and file.suffix in [".zip", ".gz", ".tar"]:
         if file.is_file() and file.suffix in [
             ".zip",
@@ -96,7 +89,6 @@ def move_file(file: Path, category: str, root_dir: Path) -> None:
             ".tar",
         ]:
             shutil.unpack_archive(file, target_dir.joinpath(file.stem))
-        # return shutil.unpack_archive(file, target_dir)
 
 
 def sort_folder(path: Path) -> None:
@@ -104,13 +96,6 @@ def sort_folder(path: Path) -> None:
         if element.is_file():
             category = get_categories(element)
             move_file(element, category, path)
-        # if element.is_dir():
-        #     if element.stat().st_size == 0:
-        #         try:
-        #             os.rmdir(element)
-        #         except OSError:
-        #             continue
-        #     return os.rmdir(element)
 
 
 def del_folder(path: Path) -> None:
